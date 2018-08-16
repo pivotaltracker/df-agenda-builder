@@ -8,9 +8,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DefinedProbCard from './DefinedProbCard';
 import GreenfieldIdeaCard from './GreenfieldIdeaCard';
-import TimingLengthCard from './TimingLengthCard';
-import TimingStartCard from './TimingStartCard'
-
+import ButtonSelector from './ButtonSelector';
+import DropdownSelector from './DropdownSelector';
 
 const styles = theme => ({
   root: {
@@ -50,7 +49,6 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
               <GreenfieldIdeaCard onClick={pickCard} active={greenFieldActive} />
             </div>
           </div>
-          
         </div>
       );
     case 1:
@@ -59,14 +57,66 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
           <Typography className={classes.instructions}>{activeCard} Kickoff Agenda</Typography>
           <div className='contentContainer'>
             <div className='timingCards'>
-              <TimingLengthCard />
-              <TimingStartCard />
+              <ButtonSelector
+                title='How long will your Kick-off be?' 
+                buttonOptions={[
+                  '4 hours',
+                  '6 hours',
+                  '8 hours',
+                ]}
+              />
+              <DropdownSelector
+                title='What time will your Kick-off start?'
+                defaultOption='8:00 am'
+                dropdownOptions={[
+                  '8:00 am',
+                  '9:00 am',
+                  '10:00 am',
+                  '11:00 am',
+                  '12:00 pm',
+                  '1:00 pm',
+                  '2:00 pm',
+                  '3:00 pm',
+                  '4:00 pm',
+                  '5:00 pm',
+                ]} 
+              />
+              <ButtonSelector 
+                title='How long will the lunch break be?'
+                buttonOptions={[
+                  'No Lunch Break',
+                  '30 minutes',
+                  '45 minutes',
+                  '60 minutes',
+                  '75 minutes',
+                  '90 minutes',
+                ]}
+              />
+              <DropdownSelector 
+                title='What time will the lunch break start?'
+                defaultOption='Noon'
+                dropdownOptions={[
+                  'Noon',
+                  '12:15 pm',
+                  '12:30 pm',
+                  '12:45 pm',
+                  '1:00 pm',
+                  '1:15 pm',
+                  '1:30 pm',
+                  '1:45 pm',
+                  '2:00 pm',
+                ]}
+              />
               </div>
           </div>
         </div>
       );
     case 2:
-      return 'Which activities will help you achieve your Kick-off objectives?';
+      return (
+        <div>
+          <Typography className={classes.instructions}>{'Which activities will help you achieve your Kick-off objectives?'}</Typography>
+        </div>
+      );
     //call method to bring up stuff for Activities
     case 3:
       return 'How does your Kick-off agenda look?';
@@ -78,8 +128,11 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
 
 class HorizontalStepper extends React.Component {
   state = {
-    activeStep: 1, /* TODO: Change me back to 0 after testing */
-    activeCard: 'none'
+    activeStep: 2, /* TODO: Change me back to 0 after testing */
+    activeCard: 'none',
+    startTime: '',
+    duration: null,
+
   };
 
   pickCard = (cardName) => {
@@ -144,7 +197,7 @@ class HorizontalStepper extends React.Component {
                   >
                     Back
                 </Button>
-                  <Button variant="contained" color="primary" onClick={this.handleNext} disabled={this.state.activeCard === 'none'}>
+                  <Button variant="contained" color="primary" onClick={this.handleNext} >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>
                 </div>

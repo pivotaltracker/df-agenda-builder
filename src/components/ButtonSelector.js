@@ -31,16 +31,18 @@ class SimpleCard extends React.Component {
   }
 
   render () {
-    const { classes } = this.props;
-    const buttonNames = ['4 hours', '6 hours', '8 hours'];
-    console.log(this.state)
+    const { 
+      classes,
+      buttonOptions,
+      title,
+     } = this.props;
 
     return (
       <div>
-      <Typography>How long will your Kick-off be?</Typography>
+      <Typography>{title}</Typography>
       <Card className={classes.card}>
         <CardContent className='LengthContainer'>
-          {buttonNames.map(function(buttonName, index) {
+          {buttonOptions.map((buttonName, index) => {
             let buttonStyle = {};
             if (buttonName === this.state.selectedButton) {
               buttonStyle.backgroundColor = '#3F7291';
@@ -60,6 +62,8 @@ class SimpleCard extends React.Component {
 
 SimpleCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  buttonOptions: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(SimpleCard);
