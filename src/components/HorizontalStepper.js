@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DefinedProbCard from './DefinedProbCard';
 import GreenfieldIdeaCard from './GreenfieldIdeaCard';
+import TimingLengthCard from './TimingLengthCard';
+import TimingStartCard from './TimingStartCard'
 
 
 const styles = theme => ({
@@ -21,41 +23,54 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
   },
+  
 });
 
 function getSteps() {
   return ['Type', 'Timing', 'Activities', 'Review'];
 }
 
-function getStepContent(stepIndex, classes) {
+function getStepContent(stepIndex, classes, pickCard, activeCard) {
   switch (stepIndex) {
     case 0:
-    return (
-    <div>
-      <Typography className={classes.instructions}>{'Which statement best describes your problem space?'}</Typography>
-
-      <div style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
-        <DefinedProbCard/>
-        <GreenfieldIdeaCard/>
-      </div>
-    </div>
-    );
-    case 1:
-    return (
-      <div>
-        <Typography className={classes.instructions}>{'How long will your kickoff be?'}</Typography>
-  
-        <div style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
-          <DefinedProbCard/>
+      let definedActive, greenFieldActive;
+      if (activeCard === 'Greenfield') {
+        greenFieldActive = true;
+      }
+      if (activeCard === 'Defined') {
+        definedActive = true;
+      }
+      return (
+        <div>
+          <Typography className={classes.instructions}>{'Build a Kick-off Agenda'}</Typography>
+          <div className='contentContainer'>
+            <Typography>Which statement best describes your problem space?</Typography>
+            <div className='cards'>
+              <DefinedProbCard onClick={pickCard} active={definedActive} />
+              <GreenfieldIdeaCard onClick={pickCard} active={greenFieldActive} />
+            </div>
+          </div>
+          
         </div>
-      </div>
+      );
+    case 1:
+      return (
+        <div>
+          <Typography className={classes.instructions}>{activeCard} Kickoff Agenda</Typography>
+          <div className='contentContainer'>
+            <div className='timingCards'>
+              <TimingLengthCard />
+              <TimingStartCard />
+              </div>
+          </div>
+        </div>
       );
     case 2:
       return 'Which activities will help you achieve your Kick-off objectives?';
-      //call method to bring up stuff for Activities
+    //call method to bring up stuff for Activities
     case 3:
       return 'How does your Kick-off agenda look?';
-      //call method to bring up stuff for Review
+    //call method to bring up stuff for Review
     default:
       return 'Unknown stepIndex';
   }
@@ -63,8 +78,13 @@ function getStepContent(stepIndex, classes) {
 
 class HorizontalStepper extends React.Component {
   state = {
-    activeStep: 0,
+    activeStep: 1, /* TODO: Change me back to 0 after testing */
+    activeCard: 'none'
   };
+
+  pickCard = (cardName) => {
+    this.setState({activeCard: cardName})
+  }
 
   handleNext = () => {
     const { activeStep } = this.state;
@@ -87,7 +107,7 @@ class HorizontalStepper extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+   const { classes } = this.props;
     const steps = getSteps();
     const { activeStep } = this.state;
 
@@ -102,7 +122,7 @@ class HorizontalStepper extends React.Component {
             );
           })}
         </Stepper>
-        
+
         <div>
           {this.state.activeStep === steps.length ? (
             <div>
@@ -112,24 +132,24 @@ class HorizontalStepper extends React.Component {
               <Button onClick={this.handleReset}>Reset</Button>
             </div>
           ) : (
-            <div>
-              {/* this needs to keep track of which card is raised */}
-              {getStepContent(activeStep, classes)}
-
               <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.backButton}
-                >
-                  Back
+                {/* this needs to keep track of which card is raised */}
+                {getStepContent(activeStep, classes, this.pickCard, this.state.activeCard)}
+
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={this.handleBack}
+                    className={classes.backButton}
+                  >
+                    Back
                 </Button>
-                <Button variant="contained" color="primary" onClick={this.handleNext}>
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
+                  <Button variant="contained" color="primary" onClick={this.handleNext} disabled={this.state.activeCard === 'none'}>
+                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     );
