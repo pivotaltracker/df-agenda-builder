@@ -29,6 +29,7 @@
 
 body .LengthButton {
   margin: 8px;
+  background-color: white;
 }
 
 .cards {
@@ -40,8 +41,6 @@ body .LengthButton {
 .contentContainer {
   display: flex;
   flex-direction: column;
-  
-  
 }
 
 .timingCards {

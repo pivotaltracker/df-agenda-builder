@@ -10,6 +10,8 @@ import DefinedProbCard from './DefinedProbCard';
 import GreenfieldIdeaCard from './GreenfieldIdeaCard';
 import ButtonSelector from './ButtonSelector';
 import DropdownSelector from './DropdownSelector';
+import Activities from './Activities';
+
 
 const styles = theme => ({
   root: {
@@ -41,7 +43,7 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
       }
       return (
         <div>
-          <Typography className={classes.instructions}>{'Build a Kick-off Agenda'}</Typography>
+          <Typography className={classes.instructions}>Build a Kick-off Activities</Typography>
           <div className='contentContainer'>
             <Typography>Which statement best describes your problem space?</Typography>
             <div className='cards'>
@@ -54,7 +56,8 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
     case 1:
       return (
         <div>
-          <Typography className={classes.instructions}>{activeCard} Kickoff Agenda</Typography>
+          <Typography className={classes.instructions}>{activeCard} Kickoff Activities</Typography>
+          <br/>
           <div className='contentContainer'>
             <div className='timingCards'>
               <ButtonSelector
@@ -65,6 +68,8 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
                   '8 hours',
                 ]}
               />
+              <br/>
+              <br/>
               <DropdownSelector
                 title='What time will your Kick-off start?'
                 defaultOption='8:00 am'
@@ -81,6 +86,8 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
                   '5:00 pm',
                 ]} 
               />
+              <br/>
+              <br/>
               <ButtonSelector 
                 title='How long will the lunch break be?'
                 buttonOptions={[
@@ -92,6 +99,8 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
                   '90 minutes',
                 ]}
               />
+              <br/>
+              <br/>
               <DropdownSelector 
                 title='What time will the lunch break start?'
                 defaultOption='Noon'
@@ -107,6 +116,8 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
                   '2:00 pm',
                 ]}
               />
+              <br/>
+              <br/>
               </div>
           </div>
         </div>
@@ -114,12 +125,17 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
     case 2:
       return (
         <div>
-          <Typography className={classes.instructions}>{'Which activities will help you achieve your Kick-off objectives?'}</Typography>
+          <Typography className={classes.instructions}>Which activities will help you achieve your Kick-off objectives?</Typography>
+          <Activities/>
         </div>
       );
     //call method to bring up stuff for Activities
     case 3:
-      return 'How does your Kick-off agenda look?';
+      return (
+        <div>
+          <Typography className={classes.instructions}>How does your Kick-off agenda look?</Typography>
+        </div>
+      );
     //call method to bring up stuff for Review
     default:
       return 'Unknown stepIndex';
@@ -128,7 +144,7 @@ function getStepContent(stepIndex, classes, pickCard, activeCard) {
 
 class HorizontalStepper extends React.Component {
   state = {
-    activeStep: 2, /* TODO: Change me back to 0 after testing */
+    activeStep: 1, /* TODO: Change me back to 0 after testing */
     activeCard: 'none',
     startTime: '',
     duration: null,

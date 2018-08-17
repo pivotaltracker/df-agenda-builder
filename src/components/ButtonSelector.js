@@ -10,7 +10,7 @@ import '../App.css';
 const styles = {
   card: {
     width: 500,
-    backgroundColor: '#eee',
+    backgroundColor: '#F4F5F7',
   },
   title: {
     marginBottom: 16,
@@ -40,6 +40,7 @@ class SimpleCard extends React.Component {
     return (
       <div>
       <Typography>{title}</Typography>
+      <br/>
       <Card className={classes.card}>
         <CardContent className='LengthContainer'>
           {buttonOptions.map((buttonName, index) => {

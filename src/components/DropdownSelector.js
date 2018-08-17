@@ -10,7 +10,7 @@ import { Select } from '../../node_modules/@material-ui/core';
 const styles = {
   card: {
     width: 500,
-    backgroundColor: '#eee',
+    backgroundColor: '#F4F5F7',
   },
   bullet: {
     display: 'inline-block',
@@ -45,6 +45,7 @@ class SimpleCard extends React.Component {
     return (
       <div>
         <Typography>{title}</Typography>
+        <br/>
         <Card className={classes.card}>
           <CardContent>
             <Select onChange={this.onSelectTime}
