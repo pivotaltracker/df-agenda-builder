@@ -21,21 +21,15 @@ const styles = {
   },
 };
 
-class SimpleCard extends React.Component {
-  state = {
-    selectedButton: null
-  }
-
-  onClickButton = (buttonName) => {
-    this.setState({selectedButton: buttonName});
-  }
-
+class ButtonSelector extends React.Component {
   render () {
-    const { 
-      classes,
+    const {
       buttonOptions,
+      classes,
+      onButtonPress,
+      selectedButton,
       title,
-     } = this.props;
+    } = this.props;
 
     return (
       <div>
@@ -45,13 +39,20 @@ class SimpleCard extends React.Component {
         <CardContent className='LengthContainer'>
           {buttonOptions.map((buttonName, index) => {
             let buttonStyle = {};
-            if (buttonName === this.state.selectedButton) {
+            if (buttonName === selectedButton) {
               buttonStyle.backgroundColor = '#3F7291';
               buttonStyle.color = '#FFF'
             }
-            
+
             return(
-              <Button key={index} style={buttonStyle}  variant='contained' className='LengthButton' onClick={this.onClickButton.bind(null, buttonName)}>{buttonName}</Button>
+              <Button
+                key={index}
+                style={buttonStyle}
+                variant='contained'
+                className='LengthButton'
+                onClick={onButtonPress.bind(null, buttonName)}>
+                {buttonName}
+              </Button>
             );
           }, this)}
         </CardContent>
@@ -61,10 +62,12 @@ class SimpleCard extends React.Component {
   }
 }
 
-SimpleCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+ButtonSelector.propTypes = {
   buttonOptions: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
+  onButtonPress: PropTypes.func.isRequired,
+  selectedButton: PropTypes.string,
   title: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(SimpleCard);
+export default withStyles(styles)(ButtonSelector);
