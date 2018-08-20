@@ -9,10 +9,11 @@ class TypeSelector extends React.Component {
   render () {
     let {
       activityType,
+      onSelectType,
     } = this.props;
 
-    const greenfieldSelectFn = this.props.onSelectType.bind(null, 'Greenfield');
-    const definedSelectFn = this.props.onSelectType.bind(null, 'Defined');
+    const greenfieldSelectFn = onSelectType.bind(null, 'Greenfield');
+    const definedSelectFn = onSelectType.bind(null, 'Defined');
 
     return (
       <div>

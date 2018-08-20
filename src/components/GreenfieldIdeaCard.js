@@ -23,14 +23,18 @@ const styles = {
 class GreenfieldIdeaCard extends React.Component {
   state = {elevation: 1}
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      active,
+      onClick,
+    } = this.props;
     return (
       <div>
         <Card className={classes.card}
           style={{ marginRight: 30, flex: 1, cursor: 'pointer' }}
-          elevation={this.props.active ? 20 : 1}
+          elevation={active ? 20 : 1}
           onClick={() => {
-            this.props.onClick('Greenfield')
+            onClick('Greenfield')
           }}>
           <CardMedia
             className={classes.media}
