@@ -30,8 +30,8 @@ class DropdownSelector extends React.Component {
           <CardContent>
             <Select onChange={this.onSelectTime}
                     value={selectedTime}>
-              {dropdownOptions.map((timeOption, index) => {
-                return <option key={index} value={timeOption}>{timeOption}</option>
+              {dropdownOptions.map((timeOptionData, index) => {
+                return <option key={index} value={timeOptionData.value}>{timeOptionData.display}</option>
               })}
             </Select>
           </CardContent>

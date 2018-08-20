@@ -43,9 +43,9 @@ class TimeScheduler extends React.Component {
               onButtonPress={onDurationSelect}
               selectedButton={duration}
               buttonOptions={[
-                '4 hours',
-                '6 hours',
-                '8 hours',
+                {display: '4 hours', value: 4},
+                {display: '6 hours', value: 6},
+                {display: '8 hours', value: 8},
               ]}
             />
             <br/>
@@ -55,16 +55,16 @@ class TimeScheduler extends React.Component {
               onOptionSelect={onStartTimeSelect}
               selectedTime={startTime}
               dropdownOptions={[
-                '8:00 am',
-                '9:00 am',
-                '10:00 am',
-                '11:00 am',
-                '12:00 pm',
-                '1:00 pm',
-                '2:00 pm',
-                '3:00 pm',
-                '4:00 pm',
-                '5:00 pm',
+                {display: '8:00 am',  value: '08:00'},
+                {display: '9:00 am',  value: '09:00'},
+                {display: '10:00 am', value: '10:00'},
+                {display: '11:00 am', value: '11:00'},
+                {display: '12:00 am', value: '12:00'},
+                {display: '1:00 am',  value: '13:00'},
+                {display: '2:00 am',  value: '14:00'},
+                {display: '3:00 am',  value: '15:00'},
+                {display: '4:00 am',  value: '16:00'},
+                {display: '5:00 am',  value: '17:00'},
               ]}
             />
             <br/>
@@ -74,12 +74,12 @@ class TimeScheduler extends React.Component {
               onButtonPress={onLunchDurationSelect}
               selectedButton={lunchDuration}
               buttonOptions={[
-                'No Lunch Break',
-                '30 minutes',
-                '45 minutes',
-                '60 minutes',
-                '75 minutes',
-                '90 minutes',
+                {display: 'No Lunch Break', value: 0},
+                {display: '30 minutes', value: 30},
+                {display: '45 minutes', value: 45},
+                {display: '60 minutes', value: 60},
+                {display: '75 minutes', value: 75},
+                {display: '90 minutes', value: 90},
               ]}
             />
             <br/>
@@ -89,15 +89,15 @@ class TimeScheduler extends React.Component {
               onOptionSelect={onLunchStartTimeSelect}
               selectedTime={lunchStartTime}
               dropdownOptions={[
-                'Noon',
-                '12:15 pm',
-                '12:30 pm',
-                '12:45 pm',
-                '1:00 pm',
-                '1:15 pm',
-                '1:30 pm',
-                '1:45 pm',
-                '2:00 pm',
+                {display: 'Noon', value: '12:00'},
+                {display: '12:15 pm', value: '12:15'},
+                {display: '12:30 pm', value: '12:30'},
+                {display: '12:45 pm', value: '12:45'},
+                {display: '1:00 pm', value: '13:00'},
+                {display: '1:15 pm', value: '13:15'},
+                {display: '1:30 pm', value: '13:30'},
+                {display: '1:45 pm', value: '13:45'},
+                {display: '2:00 pm', value: '14:00'},
               ]}
             />
             <br/>
@@ -112,8 +112,8 @@ class TimeScheduler extends React.Component {
 TimeScheduler.propTypes = {
   activityType: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
-  duration: PropTypes.string,
-  lunchDuration: PropTypes.string,
+  duration: PropTypes.number,
+  lunchDuration: PropTypes.number,
   lunchStartTime: PropTypes.string,
   onDurationSelect: PropTypes.func.isRequired,
   onLunchDurationSelect: PropTypes.func.isRequired,

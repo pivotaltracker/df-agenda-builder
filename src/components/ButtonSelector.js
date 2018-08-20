@@ -35,9 +35,9 @@ class ButtonSelector extends React.Component {
         <br/>
         <Card className={classes.card}>
           <CardContent className='LengthContainer'>
-            {buttonOptions.map((buttonName, index) => {
+            {buttonOptions.map((buttonData, index) => {
               let buttonStyle = {};
-              if (buttonName === selectedButton) {
+              if (buttonData.value === selectedButton) {
                 buttonStyle.backgroundColor = '#3F7291';
                 buttonStyle.color = '#FFF'
               }
@@ -48,8 +48,8 @@ class ButtonSelector extends React.Component {
                   style={buttonStyle}
                   variant='contained'
                   className='LengthButton'
-                  onClick={onButtonPress.bind(null, buttonName)}>
-                  {buttonName}
+                  onClick={onButtonPress.bind(null, buttonData.value)}>
+                  {buttonData.display}
                 </Button>
               );
             }, this)}
@@ -64,7 +64,7 @@ ButtonSelector.propTypes = {
   buttonOptions: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
   onButtonPress: PropTypes.func.isRequired,
-  selectedButton: PropTypes.string,
+  selectedButton: PropTypes.number,
   title: PropTypes.string.isRequired,
 };
 
