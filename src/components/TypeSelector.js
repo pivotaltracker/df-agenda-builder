@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
 import DefinedProbCard from './DefinedProbCard';
 import GreenfieldIdeaCard from './GreenfieldIdeaCard';
 import '../App.css';
@@ -17,9 +16,9 @@ class TypeSelector extends React.Component {
 
     return (
       <div>
-        <Typography>Build a Kick-off Activities</Typography>
+        <div className='StepDefinition'>Build a Kick-off Activities</div>
         <div className='contentContainer'>
-          <Typography>Which statement best describes your problem space?</Typography>
+          <div>Which statement best describes your problem space?</div>
           <div className='cards'>
             <DefinedProbCard onClick={definedSelectFn} active={activityType === 'Defined'} />
             <GreenfieldIdeaCard onClick={greenfieldSelectFn} active={activityType === 'Greenfield'} />

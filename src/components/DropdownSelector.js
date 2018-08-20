@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import { Select } from '@material-ui/core';
 import '../App.css';
 
@@ -25,7 +24,7 @@ class DropdownSelector extends React.Component {
 
     return (
       <div>
-        <Typography>{title}</Typography>
+        <div>{title}</div>
         <br/>
         <Card className={classes.card}>
           <CardContent>

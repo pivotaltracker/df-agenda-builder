@@ -14,7 +14,9 @@ class AgendaViewer extends React.Component {
     } = this.props;
 
     return (
-      <div className={classes.AgendaViewer}>AgendaViewer</div>
+      <div className={classes.AgendaViewer}>
+        <div className='StepDefinition'>How dis?</div>
+      </div>
     );
   }
 }

@@ -26,7 +26,7 @@ const INITIAL_ACTIVITIES = [
 
 class App extends Component {
   state = {
-    activeStep: 2, /* TODO: Change me back to 0 after testing */
+    activeStep: 0, /* TODO: Change me back to 0 after testing */
     activities: INITIAL_ACTIVITIES,
     activityType: null,
     duration: null,

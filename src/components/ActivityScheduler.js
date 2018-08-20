@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import '../App.css';
 
@@ -102,7 +101,7 @@ class ActivityScheduler extends React.Component {
 
     return (
       <div>
-        <Typography className={classes.instructions}>Which activities will help you achieve your Kick-off objectives?</Typography>
+        <div className='StepDefinition'>Which activities will help you achieve your Kick-off objectives?</div>
         <div className={classes.ActivitiesContentContainer}>
           <Card className={classes.Card}>
             <div className={classes.ActivitiesContent}>

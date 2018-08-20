@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import ButtonSelector from './ButtonSelector';
 import DropdownSelector from './DropdownSelector';
 import '../App.css';
@@ -35,7 +34,7 @@ class TimeScheduler extends React.Component {
 
     return (
       <div>
-        <Typography>{activityType} Kickoff Activities</Typography>
+        <div className='StepDefinition'>{activityType} Kickoff Activities</div>
         <br/>
         <div className='contentContainer'>
           <div className='timingCards'>
