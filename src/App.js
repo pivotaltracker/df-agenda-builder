@@ -35,6 +35,16 @@ class App extends Component {
     startTime: '',
   }
 
+  // state = {
+  //   activeStep: 3, /* TODO: Change me back to 0 after testing */
+  //   activities: INITIAL_ACTIVITIES,
+  //   activityType: 'Greenfield',
+  //   duration: '8 hours',
+  //   lunchDuration: '45 minutes',
+  //   lunchStartTime: 'Noon',
+  //   startTime: '8:00 am',
+  // }
+
   render() {
     let {
       activeStep,
@@ -93,7 +103,16 @@ class App extends Component {
       case 2:
         return <ActivityScheduler activities={activities} onActivityReorder={this.reorderActivities} />;
       case 3:
-        return <AgendaViewer />;
+        return (
+          <AgendaViewer
+            activityType={activityType}
+            duration={duration}
+            lunchDuration={lunchDuration}
+            lunchStartTime={lunchStartTime}
+            startTime={startTime}
+            activities={activities}
+          />
+        );
       case 4:
         return (
           <div>
