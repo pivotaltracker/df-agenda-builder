@@ -2,6 +2,9 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "deploy": "scripts/deploy.sh"
+  },
   "dependencies": {
     "@material-ui/core": "^1.3.0",
     "contentful": "^6.1.1",
