@@ -42,10 +42,10 @@ class HorizontalStepper extends React.Component {
     return (
       <div className={classes.stepperContainer}>
         <Stepper activeStep={activeStep} className={classes.Stepper} alternativeLabel>
-          {STEPS.map(label => {
+          {STEPS.map((label, i) => {
             return (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel className={`HorizontalStepperStepLabel${i <= activeStep ? ' HorizontalStepperStepLabel--active' : ''}`}>{label}</StepLabel>
               </Step>
             );
           })}

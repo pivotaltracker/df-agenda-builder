@@ -67,3 +67,7 @@ body .LengthButton {
   font-weight: 400;
   margin-bottom: 15px;
 }
+
+.HorizontalStepperStepLabel--active svg {
+  color: #49718F !important;
+}
