@@ -11,6 +11,9 @@ const styles = {
     width: 500,
     backgroundColor: '#F4F5F7',
   },
+  title: {
+    fontFamily: 'Roboto Slab',
+  }
 };
 
 class DropdownSelector extends React.Component {
@@ -24,7 +27,7 @@ class DropdownSelector extends React.Component {
 
     return (
       <div>
-        <div>{title}</div>
+        <div className={classes.title}>{title}</div>
         <br/>
         <Card className={classes.card}>
           <CardContent>

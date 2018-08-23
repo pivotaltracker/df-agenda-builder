@@ -21,7 +21,6 @@ const styles = theme => ({
 class TimeScheduler extends React.Component {
   render () {
     let {
-      activityType,
       duration,
       lunchDuration,
       lunchStartTime,
@@ -34,7 +33,7 @@ class TimeScheduler extends React.Component {
 
     return (
       <div>
-        <div className='StepDefinition'>{activityType} Kickoff Activities</div>
+        <div className='StepHeader'>Build a Kick-off Agenda</div>
         <br/>
         <div className='contentContainer'>
           <div className='timingCards'>
@@ -110,7 +109,6 @@ class TimeScheduler extends React.Component {
 }
 
 TimeScheduler.propTypes = {
-  activityType: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   duration: PropTypes.number,
   lunchDuration: PropTypes.number,

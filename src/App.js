@@ -36,7 +36,7 @@ class App extends Component {
   }
 
   // state = {
-  //   activeStep: 3, /* TODO: Change me back to 0 after testing */
+  //   activeStep: 2, /* TODO: Change me back to 0 after testing */
   //   activities: INITIAL_ACTIVITIES,
   //   activityType: 'Greenfield',
   //   duration: 8,
@@ -54,15 +54,17 @@ class App extends Component {
       <div>
         <Header />
         <HorizontalStepper activeStep={activeStep} />
-        {this.renderStep()}
-        <NavButtons onClickNext={this.nextStep}
-                    onClickPrev={this.prevStep}
-                    onClickReset={this.resetSteps}
-                    onFirstStep={activeStep === 0}
-                    onLastStep={activeStep === 3}
-                    finished={activeStep > 3}
-                    canMoveToNextStep={this.canMoveToNextStep()}
-                    />
+        <div className='contentOuterContainer'>
+          {this.renderStep()}
+          <NavButtons onClickNext={this.nextStep}
+                      onClickPrev={this.prevStep}
+                      onClickReset={this.resetSteps}
+                      onFirstStep={activeStep === 0}
+                      onLastStep={activeStep === 3}
+                      finished={activeStep > 3}
+                      canMoveToNextStep={this.canMoveToNextStep()}
+                      />
+        </div>
       </div>
     );
   }
@@ -89,7 +91,6 @@ class App extends Component {
       case 1:
         return (
           <TimeScheduler
-            activityType={activityType}
             duration={duration}
             lunchDuration={lunchDuration}
             lunchStartTime={lunchStartTime}
@@ -116,9 +117,7 @@ class App extends Component {
       case 4:
         return (
           <div>
-
-              All steps completed - you're finished
-
+            All steps completed - you are finished
           </div>
         );
       default:

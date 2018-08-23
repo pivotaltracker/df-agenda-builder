@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Button from '@material-ui/core/Button';
+
 import '../App.css';
 
 const styles = {
@@ -34,6 +36,23 @@ const styles = {
     width: 500,
     backgroundColor: '#F4F5F7',
   },
+  activityDescription: {
+    width: 460,
+    backgroundColor: '#eab889',
+    padding: '10px 20px',
+    margin: '0 0 10px 0',
+  },
+  activityDescriptionTitle: {
+    fontFamily: 'Roboto Slab',
+    marginBottom: 8,
+  },
+  CloseButton: {
+    backgroundColor: 'none',
+    marginLeft: 385,
+  },
+  activityDescriptionContent: {
+
+  }
 };
 
 // a little function to help us with reordering the result
@@ -68,6 +87,10 @@ const getListStyle = isDraggingOver => ({
 });
 
 class ActivityScheduler extends React.Component {
+  state = {
+    activityDescription: null,
+  }
+
   constructor(props) {
     super(props);
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -99,18 +122,23 @@ class ActivityScheduler extends React.Component {
       classes,
     } = this.props;
 
+    let {
+      activityDescription
+    } = this.state;
+
     return (
       <div>
-        <div className='StepDefinition'>Which activities will help you achieve your Kick-off objectives?</div>
+        <div className='StepHeader'>Build a Kick-off Agenda</div>
         <div className={classes.ActivitiesContentContainer}>
+          <div className='StepSubheader' style={{width: 500}}>Which activities will help you achieve your Kick-off objectives?<br />Drag &amp; Drop the activites to place them in order of importance. Click an activity to learn more.</div>
+          {activityDescription ? this.showActivityDescription() : null}
           <Card className={classes.Card}>
             <div className={classes.ActivitiesContent}>
 
-
               <div className={classes.ActivitiesLabels}>
-              {activities.map((item, index) => (
-                <div key={index} className={classes.ActivitiesLabel}>{index + 1}</div>
-              ))}
+                {activities.map((item, index) => (
+                  <div key={index} className={classes.ActivitiesLabel}>{index + 1}</div>
+                ))}
               </div>
 
               <div className={classes.ActivitiesCards}>
@@ -121,23 +149,28 @@ class ActivityScheduler extends React.Component {
                       ref={provided.innerRef}
                       style={getListStyle(snapshot.isDraggingOver)}
                       className='MuiPaper-root-9 MuiCard-root-146 SimpleCard-card-148'>
-                        {activities.map((item, index) => (
-                          <Draggable key={item.id} draggableId={item.id} index={index}>
-                          {(provided, snapshot) => (
-                            <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
+                        {activities.map((item, index) => {
+                          let describeActivityFn = this.describeActivity.bind(null, item.content);
+
+                          return(
+                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                            {(provided, snapshot) => (
+                              <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              onClick={describeActivityFn}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                              >
+                              {item.content}
+                              </div>
                             )}
-                            >
-                            {item.content}
-                            </div>
-                          )}
-                          </Draggable>
-                        ))}
+                            </Draggable>
+                          );
+                        })}
                         {provided.placeholder}
                       </div>
                     )}
@@ -150,6 +183,31 @@ class ActivityScheduler extends React.Component {
           </Card>
         </div>
       </div>
+    );
+  }
+
+  describeActivity = (description) => {
+    this.setState((prevState, props) => {
+      return {activityDescription: description};
+    });
+  }
+
+  showActivityDescription = () => {
+    let {
+      classes,
+    } = this.props;
+
+    let {
+      activityDescription
+    } = this.state;
+
+    return(
+      <Card className={classes.activityDescription}>
+        <div className={classes.activityDescriptionTitle}>Activity Description:</div>
+        <div className={classes.activityDescriptionContent}>This is a detailed desription of the activity {activityDescription}</div>
+        <br />
+        <Button className={classes.CloseButton} onClick={this.describeActivity.bind(null, null)}>Close</Button>
+      </Card>
     );
   }
 }

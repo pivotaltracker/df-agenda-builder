@@ -12,7 +12,7 @@ const styles = {
     backgroundColor: '#F4F5F7',
   },
   title: {
-
+    fontFamily: 'Roboto Slab',
   },
   pos: {
     marginBottom: 12,

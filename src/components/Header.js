@@ -1,6 +1,4 @@
 import React from 'react'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import BannerWatermark from '../images/banner_watermark.png';
@@ -9,10 +7,10 @@ import TrackerLogo from '../images/Tracker_Horizontal.svg';
 const styles = {
   header: {
     backgroundImage: `url(${BannerWatermark})`,
+    backgroundRepeat: 'no-repeat',
     backgroundColor: '#49718F',
     height: '100px',
     display: 'flex',
-    alignItems: 'right',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
@@ -36,7 +34,6 @@ class Header extends React.Component {
       </div>
     );
   }
-
 }
 
 Header.propTypes = {

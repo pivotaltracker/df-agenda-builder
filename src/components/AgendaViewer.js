@@ -30,7 +30,7 @@ class AgendaViewer extends React.Component {
 
     return (
       <div className={classes.AgendaViewer}>
-        <div className='StepDefinition'>How dis?</div>
+        <div className='StepHeader'>Build a Kick-off Agenda</div>
 
 
         <div className='contentContainer'>

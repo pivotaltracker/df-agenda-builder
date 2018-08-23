@@ -16,9 +16,9 @@ class TypeSelector extends React.Component {
 
     return (
       <div>
-        <div className='StepDefinition'>Build a Kick-off Activities</div>
+        <div className='StepHeader'>Build a Kick-off Agenda</div>
         <div className='contentContainer'>
-          <div>Which statement best describes your problem space?</div>
+          <div className='StepSubheader' style={{marginRight: '316px'}}>Which statement best describes your problem space?</div>
           <div className='cards'>
             <DefinedProbCard onClick={definedSelectFn} active={activityType === 'Defined'} />
             <GreenfieldIdeaCard onClick={greenfieldSelectFn} active={activityType === 'Greenfield'} />

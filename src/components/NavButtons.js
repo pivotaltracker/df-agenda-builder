@@ -7,16 +7,38 @@ import '../App.css';
 
 const styles = {
   NavButton: {
-    marginLeft: '10px',
+    margin: '0 0 0 10px',
+    flex: '0 0 auto',
+    width: '100px',
+    backgroundColor: '#E49954',
+  },
+  NavigationOuterContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: '10px 0',
+  },
+  NavigationContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: 500,
+
   }
 };
 
 class NavButtons extends React.Component {
   render () {
+    let {
+      classes,
+    } = this.props;
+
     return (
-      <div>
-        {this.renderPrevButton()}
-        {this.renderNextButton()}
+      <div className={classes.NavigationOuterContainer}>
+        <div className={classes.NavigationContainer}>
+          {this.renderPrevButton()}
+          {this.renderNextButton()}
+        </div>
       </div>
     );
   }

@@ -16,6 +16,18 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
   },
+  stepperContainer: {
+    backgroundColor: '#F3F5F7',
+    filter: 'drop-shadow(0px 1px 3px #999999)',
+    height: 108,
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 40,
+  },
+  Stepper: {
+    backgroundColor: '#F3F5F7',
+    width: 350,
+  }
 });
 
 const STEPS = ['Type', 'Timing', 'Activities', 'Review'];
@@ -28,8 +40,8 @@ class HorizontalStepper extends React.Component {
     } = this.props;
 
     return (
-      <div className={classes.root}>
-        <Stepper activeStep={activeStep} alternativeLabel>
+      <div className={classes.stepperContainer}>
+        <Stepper activeStep={activeStep} className={classes.Stepper} alternativeLabel>
           {STEPS.map(label => {
             return (
               <Step key={label}>
