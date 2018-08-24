@@ -136,7 +136,12 @@ class App extends Component {
 
     if (this.state.activeStep === 0 && activityType === null) {
       return false;
-    } else if (this.state.activeStep === 1 && (duration === null || lunchDuration === null || startTime === '' || lunchStartTime === '')) {
+    } else if (this.state.activeStep === 1 && (
+      duration === null ||
+      lunchDuration === null ||
+      startTime === '' ||
+      (lunchDuration > 0 && lunchStartTime === '')
+    )) {
       return false;
     }
     return true;

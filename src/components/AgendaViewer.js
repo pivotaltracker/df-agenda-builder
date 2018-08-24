@@ -69,6 +69,7 @@ class AgendaViewer extends React.Component {
 
     let timedActivities = activities.slice(); // clone activities so we can much with it
     let lunchScheduled = false;
+    let lunchNeeded = lunchDuration > 0;
 
     let now = moment(); // grab now so that we are doing time math for today
     let start = moment(`${now.year()}-${now.month()+1}-${now.date()} ${startTime}`, 'YYYY-MM-DD HH:mm'); //2013-02-08 09:30
@@ -80,7 +81,7 @@ class AgendaViewer extends React.Component {
 
     timedActivities.forEach((activity, index) => {
       // if next segment will overlap lunch time
-      if (!lunchScheduled && (segmentStartTime.isAfter(lunchStart) || segmentStartTime.isSame(lunchStart))) {
+      if (!lunchScheduled && lunchNeeded && (segmentStartTime.isAfter(lunchStart) || segmentStartTime.isSame(lunchStart))) {
         // change the end time to account for the duration of lunch
         segmentEndTime = moment(segmentStartTime);
         segmentEndTime.add(lunchDuration, 'minutes');

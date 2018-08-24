@@ -31,6 +31,8 @@ class TimeScheduler extends React.Component {
       startTime,
     } = this.props;
 
+    let hideLunchTime = lunchDuration === 0 ? 'hide lunch time' : 'show lunch time'
+
     return (
       <div>
         <div className='StepHeader'>Build a Kick-off Agenda</div>
@@ -83,28 +85,44 @@ class TimeScheduler extends React.Component {
             />
             <br/>
             <br/>
-            <DropdownSelector
-              title='What time will the lunch break start?'
-              onOptionSelect={onLunchStartTimeSelect}
-              selectedTime={lunchStartTime}
-              dropdownOptions={[
-                {display: 'Noon', value: '12:00'},
-                {display: '12:15 pm', value: '12:15'},
-                {display: '12:30 pm', value: '12:30'},
-                {display: '12:45 pm', value: '12:45'},
-                {display: '1:00 pm', value: '13:00'},
-                {display: '1:15 pm', value: '13:15'},
-                {display: '1:30 pm', value: '13:30'},
-                {display: '1:45 pm', value: '13:45'},
-                {display: '2:00 pm', value: '14:00'},
-              ]}
-            />
+            {this.maybeShowLunchTime()}
             <br/>
             <br/>
             </div>
         </div>
       </div>
     );
+  }
+
+  maybeShowLunchTime = () => {
+    let {
+      lunchDuration,
+      onLunchStartTimeSelect,
+      lunchStartTime,
+    } = this.props;
+
+    if (lunchDuration === 0) {
+      return null;
+    } else {
+      return (
+        <DropdownSelector
+        title='What time will the lunch break start?'
+        onOptionSelect={onLunchStartTimeSelect}
+        selectedTime={lunchStartTime}
+        dropdownOptions={[
+          {display: 'Noon', value: '12:00'},
+          {display: '12:15 pm', value: '12:15'},
+          {display: '12:30 pm', value: '12:30'},
+          {display: '12:45 pm', value: '12:45'},
+          {display: '1:00 pm', value: '13:00'},
+          {display: '1:15 pm', value: '13:15'},
+          {display: '1:30 pm', value: '13:30'},
+          {display: '1:45 pm', value: '13:45'},
+          {display: '2:00 pm', value: '14:00'},
+        ]}
+        />
+      );
+    }
   }
 }
 
