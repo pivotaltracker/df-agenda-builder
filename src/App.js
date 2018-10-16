@@ -25,27 +25,28 @@ const INITIAL_ACTIVITIES = [
 ];
 
 class App extends Component {
-  state = {
-    activeStep: 0, /* TODO: Change me back to 0 after testing */
-    activities: INITIAL_ACTIVITIES,
-    activityType: null,
-    duration: null,
-    lunchDuration: null,
-    lunchStartTime: '',
-    startTime: '',
-    kickOffName: '',
-  }
-
   // state = {
-  //   activeStep: 3, /* TODO: Change me back to 0 after testing */
+  //   activeStep: 0, /* TODO: Change me back to 0 after testing */
   //   activities: INITIAL_ACTIVITIES,
-  //   activityType: 'Greenfield',
-  //   duration: 6,
-  //   lunchDuration: 45,
-  //   lunchStartTime: '12:00',
-  //   startTime: '08:00',
+  //   activityType: null,
+  //   duration: null,
+  //   lunchDuration: null,
+  //   lunchStartTime: '',
+  //   startTime: '',
   //   kickOffName: '',
   // }
+
+  state = {
+    activeStep: 2, /* TODO: Change me back to 0 after testing */
+    activities: INITIAL_ACTIVITIES,
+    selectedActivities: [],
+    activityType: 'Greenfield',
+    duration: 6,
+    lunchDuration: 45,
+    lunchStartTime: '12:00',
+    startTime: '08:00',
+    kickOffName: '',
+  }
 
   render() {
     let {
@@ -79,6 +80,7 @@ class App extends Component {
       duration,
       lunchDuration,
       lunchStartTime,
+      selectedActivities,
       startTime,
       kickOffName,
     } = this.state;
@@ -105,7 +107,7 @@ class App extends Component {
           />
         );
       case 2:
-        return <ActivityScheduler activities={activities} onActivityReorder={this.reorderActivities} />;
+        return <ActivityScheduler activities={activities} onActivityReorder={this.reorderActivities} selectedActivities={selectedActivities} />;
       case 3:
         return (
           <AgendaViewer

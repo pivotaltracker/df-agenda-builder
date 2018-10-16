@@ -13,6 +13,27 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
   },
+  ActivitiesCardContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  Card: {
+    width: 500,
+    backgroundColor: '#F4F5F7',
+  },
+  AgendaList: {
+    width: 500,
+  },
+
+
+
+
+
+
+
+
+
+
   ActivitiesContent: {
     display: 'flex',
     flexDirection: 'row',
@@ -32,10 +53,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
   },
-  Card: {
-    width: 500,
-    backgroundColor: '#F4F5F7',
-  },
+
   activityDescription: {
     width: 460,
     backgroundColor: '#eab889',
@@ -97,6 +115,7 @@ class ActivityScheduler extends React.Component {
   }
 
   onDragEnd(result) {
+    debugger
     let {
       activities,
       onActivityReorder,
@@ -119,6 +138,7 @@ class ActivityScheduler extends React.Component {
   render () {
     let {
       activities,
+      selectedActivities,
       classes,
     } = this.props;
 
@@ -130,60 +150,164 @@ class ActivityScheduler extends React.Component {
       <div>
         <div className='StepHeader'>Build a Kick-off Agenda</div>
         <div className={classes.ActivitiesContentContainer}>
-          <div className='StepSubheader' style={{width: 500}}>Which activities will help you achieve your Kick-off objectives?<br />Drag &amp; Drop the activites to place them in order of importance. Click an activity to learn more.</div>
-          {activityDescription ? this.showActivityDescription() : null}
-          <Card className={classes.Card}>
-            <div className={classes.ActivitiesContent}>
+          <div className='StepSubheader' style={{width: 800}}>Which activities will help you achieve your Kick-off objectives?<br />Drag &amp; Drop the activites to place them in order of importance. Click an activity to learn more.</div>
+          <div className={classes.ActivitiesCardContainer}>
+            <div className={classes.AgendaList}>
+              <DragDropContext onDragEnd={this.onDragEnd} className='ActivitiesItems'>
+                <Droppable droppableId="droppable">
+                  {(provided, snapshot) => (
+                    <div
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                    className='MuiPaper-root-9 MuiCard-root-146 SimpleCard-card-148'>
+                      {activities.map((item, index) => {
+                        let describeActivityFn = this.describeActivity.bind(null, item.content);
 
-              <div className={classes.ActivitiesLabels}>
-                {activities.map((item, index) => (
-                  <div key={index} className={classes.ActivitiesLabel}>{index + 1}</div>
-                ))}
-              </div>
-
-              <div className={classes.ActivitiesCards}>
-                <DragDropContext onDragEnd={this.onDragEnd} className='ActivitiesItems'>
-                  <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                      <div
-                      ref={provided.innerRef}
-                      style={getListStyle(snapshot.isDraggingOver)}
-                      className='MuiPaper-root-9 MuiCard-root-146 SimpleCard-card-148'>
-                        {activities.map((item, index) => {
-                          let describeActivityFn = this.describeActivity.bind(null, item.content);
-
-                          return(
-                            <Draggable key={item.id} draggableId={item.id} index={index}>
-                            {(provided, snapshot) => (
-                              <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              onClick={describeActivityFn}
-                              style={getItemStyle(
-                                snapshot.isDragging,
-                                provided.draggableProps.style
-                              )}
-                              >
-                              {item.content}
-                              </div>
+                        return(
+                          <Draggable key={item.id} draggableId={item.id} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            onClick={describeActivityFn}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
                             )}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
-              </div>
-
-
+                            >
+                            {item.content}
+                            </div>
+                          )}
+                          </Draggable>
+                        );
+                      })}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </div>
-          </Card>
+
+
+
+            <Card className={classes.Card}>
+              <div className={classes.ActivitiesContent}>
+
+                <div className={classes.ActivitiesLabels}>
+                  {activities.map((item, index) => (
+                    <div key={index} className={classes.ActivitiesLabel}>{index + 1}</div>
+                  ))}
+                </div>
+
+                <div className={classes.ActivitiesCards}>
+                  <DragDropContext onDragEnd={this.onDragEnd} className='ActivitiesItems'>
+                    <Droppable droppableId="droppableSelected">
+                      {(provided, snapshot) => (
+                        <div
+                        ref={provided.innerRef}
+                        style={getListStyle(snapshot.isDraggingOver)}
+                        className='MuiPaper-root-9 MuiCard-root-146 SimpleCard-card-148'>
+                          {selectedActivities.map((item, index) => {
+                            let describeActivityFn = this.describeActivity.bind(null, item.content);
+
+                            return(
+                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                              {(provided, snapshot) => (
+                                <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                onClick={describeActivityFn}
+                                style={getItemStyle(
+                                  snapshot.isDragging,
+                                  provided.draggableProps.style
+                                )}
+                                >
+                                {item.content}
+                                </div>
+                              )}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                </div>
+
+
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     );
+
+
+
+
+
+
+    // return (
+    //   <div>
+    //     <div className='StepHeader'>Build a Kick-off Agenda</div>
+    //     <div className={classes.ActivitiesContentContainer}>
+    //       <div className='StepSubheader' style={{width: 500}}>Which activities will help you achieve your Kick-off objectives?<br />Drag &amp; Drop the activites to place them in order of importance. Click an activity to learn more.</div>
+    //       {activityDescription ? this.showActivityDescription() : null}
+    //       <Card className={classes.Card}>
+    //         <div className={classes.ActivitiesContent}>
+    //
+    //           <div className={classes.ActivitiesLabels}>
+    //             {activities.map((item, index) => (
+    //               <div key={index} className={classes.ActivitiesLabel}>{index + 1}</div>
+    //             ))}
+    //           </div>
+    //
+    //           <div className={classes.ActivitiesCards}>
+    //             <DragDropContext onDragEnd={this.onDragEnd} className='ActivitiesItems'>
+    //               <Droppable droppableId="droppable">
+    //                 {(provided, snapshot) => (
+    //                   <div
+    //                   ref={provided.innerRef}
+    //                   style={getListStyle(snapshot.isDraggingOver)}
+    //                   className='MuiPaper-root-9 MuiCard-root-146 SimpleCard-card-148'>
+    //                     {activities.map((item, index) => {
+    //                       let describeActivityFn = this.describeActivity.bind(null, item.content);
+    //
+    //                       return(
+    //                         <Draggable key={item.id} draggableId={item.id} index={index}>
+    //                         {(provided, snapshot) => (
+    //                           <div
+    //                           ref={provided.innerRef}
+    //                           {...provided.draggableProps}
+    //                           {...provided.dragHandleProps}
+    //                           onClick={describeActivityFn}
+    //                           style={getItemStyle(
+    //                             snapshot.isDragging,
+    //                             provided.draggableProps.style
+    //                           )}
+    //                           >
+    //                           {item.content}
+    //                           </div>
+    //                         )}
+    //                         </Draggable>
+    //                       );
+    //                     })}
+    //                     {provided.placeholder}
+    //                   </div>
+    //                 )}
+    //               </Droppable>
+    //             </DragDropContext>
+    //           </div>
+    //
+    //
+    //         </div>
+    //       </Card>
+    //     </div>
+    //   </div>
+    // );
   }
 
   describeActivity = (description) => {
