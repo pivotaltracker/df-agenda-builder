@@ -71,3 +71,18 @@ body .LengthButton {
 .HorizontalStepperStepLabel--active svg {
   color: #49718F !important;
 }
+
+.AgendaItem {
+  color: #fff;
+  padding: 15px 8px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+}
+
+.AgendaItem--activity {
+  background-color: #4A718F;
+}
+
+.AgendaItem--non-activity {
+  background-color: #A4A7AE;
+}

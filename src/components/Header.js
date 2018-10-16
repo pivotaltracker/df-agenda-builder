@@ -30,7 +30,7 @@ class Header extends React.Component {
 
     return(
       <div className={classes.header}>
-        <img className={classes.logo} src={TrackerLogo} />
+        <img className={classes.logo} src={TrackerLogo} alt='Pivotal Tracker Logo' />
       </div>
     );
   }

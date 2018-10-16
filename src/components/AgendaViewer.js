@@ -6,6 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import moment from 'moment';
 import '../App.css';
 
+const BREAK_TITLE = 'Revisit & Clean-up';
+const TIME_FORMAT = 'h:mm';
+
 const styles = {
   AgendaViewer: {
 
@@ -36,9 +39,7 @@ class AgendaViewer extends React.Component {
         <div className='contentContainer'>
           <Card className={classes.card}>
             <CardContent>
-              <div>Dis?</div>
-
-              <div>
+              <div style={{border: '1px solid #000', padding: '8px'}}>
                 <strong>Recap:</strong>
                 <div>duration: {duration} hours</div>
                 <div>startTime: {startTime}</div>
@@ -48,7 +49,7 @@ class AgendaViewer extends React.Component {
 
               <br />
               {this.scheduledActivities().map((activity, index) => {
-                return(<div key={index}>{activity.time} • {activity.content}</div>);
+                return(<div className={`AgendaItem AgendaItem--${activity.type}`} key={index}>{activity.content}, {activity.startTime} - {activity.endTime}</div>);
               })}
             </CardContent>
           </Card>
@@ -67,74 +68,95 @@ class AgendaViewer extends React.Component {
       lunchDuration,
     } = this.props;
 
-    let timedActivities = activities.slice(); // clone activities so we can much with it
+    let scheduledActivitiesList = [];
+
     let lunchScheduled = false;
     let lunchNeeded = lunchDuration > 0;
 
     let now = moment(); // grab now so that we are doing time math for today
-    let start = moment(`${now.year()}-${now.month()+1}-${now.date()} ${startTime}`, 'YYYY-MM-DD HH:mm'); //2013-02-08 09:30
-    let lunchStart = moment(`${now.year()}-${now.month()+1}-${now.date()} ${lunchStartTime}`, 'YYYY-MM-DD HH:mm'); //2013-02-08 09:30
+    const start = moment(`${now.year()}-${now.month()+1}-${now.date()} ${startTime}`, 'YYYY-MM-DD HH:mm'); //2013-02-08 09:30
+    const finish = moment(start).add(duration, 'hours');
+    const lunchStart = moment(`${now.year()}-${now.month()+1}-${now.date()} ${lunchStartTime}`, 'YYYY-MM-DD HH:mm'); //2013-02-08 09:30
+    let outOfTime = false;
 
-    const activityDuration = this.activityTimeInMinutes();
+    const activityDuration = 45;
     let segmentStartTime = moment(start); // initialize first segment to be at overall start time
-    let segmentEndTime;
+    let segmentEndTime = moment(segmentStartTime);
+    segmentEndTime.add(activityDuration, 'minutes');
 
-    timedActivities.forEach((activity, index) => {
-      // if next segment will overlap lunch time
-      if (!lunchScheduled && lunchNeeded && (segmentStartTime.isAfter(lunchStart) || segmentStartTime.isSame(lunchStart))) {
-        // change the end time to account for the duration of lunch
-        segmentEndTime = moment(segmentStartTime);
-        segmentEndTime.add(lunchDuration, 'minutes');
+    activities.forEach((activity, index) => {
 
-        // insert lunch into the list of activities
-        timedActivities.splice(index, 0, {
-          content: 'LUNCH',
-          time: segmentStartTime.format('h:mm a'),
-        });
+      if (!outOfTime) {
+        if (!lunchScheduled && lunchNeeded && (segmentEndTime.isAfter(lunchStart) || segmentStartTime.isSame(lunchStart))) {
+          if (!segmentStartTime.isSame(lunchStart)) {
+            scheduledActivitiesList.push({
+              content: BREAK_TITLE,
+              startTime: segmentStartTime.format(TIME_FORMAT),
+              endTime: segmentEndTime.format(TIME_FORMAT),
+              type: 'non-activity',
+            });
+          }
 
-        // reset segment start and end times to continue from the end of lunch
-        segmentStartTime = moment(segmentEndTime);
-        segmentEndTime = moment(segmentStartTime);
-        segmentEndTime.add(activityDuration, 'minutes');
+          segmentStartTime = moment(lunchStart);
+          segmentStartTime.add(lunchDuration, 'minutes');
+          segmentEndTime = moment(segmentStartTime);
+          segmentEndTime.add(activityDuration, 'minutes');
 
-        // mark lunch as scheduled so we don't do this again
-        lunchScheduled = true;
-      } else {
-        // figure out when this segment is going to end
-        segmentEndTime = moment(segmentStartTime);
-        segmentEndTime.add(activityDuration, 'minutes');
+          scheduledActivitiesList.push({
+            content: 'Lunch',
+            startTime: lunchStart.format(TIME_FORMAT),
+            endTime: segmentStartTime.format(TIME_FORMAT),
+            type: 'non-activity',
+          });
+          lunchScheduled = true;
 
-        console.log('scheduling', activity.content, 'to start at', segmentStartTime.format('h:mm a'))
-        console.log('scheduling', activity.content, 'to end at', segmentEndTime.format('h:mm a'))
 
-        activity.time = segmentStartTime.format('h:mm a');
-        segmentStartTime = moment(segmentEndTime);
+
+          if (segmentEndTime.isBefore(finish)) {
+            scheduledActivitiesList.push({
+              content: activity.content,
+              startTime: segmentStartTime.format(TIME_FORMAT),
+              endTime: segmentEndTime.format(TIME_FORMAT),
+              type: 'activity',
+            });
+
+            segmentStartTime = moment(segmentEndTime);
+            segmentEndTime = moment(segmentStartTime);
+            segmentEndTime.add(activityDuration, 'minutes');
+          } else {
+            scheduledActivitiesList.push({
+              content: BREAK_TITLE,
+              startTime: segmentStartTime.format(TIME_FORMAT),
+              endTime: segmentEndTime.format(TIME_FORMAT),
+              type: 'non-activity',
+            });
+          }
+        } else if (segmentEndTime.isAfter(finish)) {
+          outOfTime = true;
+          if (segmentStartTime.isBefore(finish)) {
+            scheduledActivitiesList.push({
+              content: BREAK_TITLE,
+              startTime: segmentStartTime.format(TIME_FORMAT),
+              endTime: segmentEndTime.format(TIME_FORMAT),
+              type: 'non-activity',
+            });
+          }
+        } else {
+          scheduledActivitiesList.push({
+            content: activity.content,
+            startTime: segmentStartTime.format(TIME_FORMAT),
+            endTime: segmentEndTime.format(TIME_FORMAT),
+            type: 'activity',
+          });
+
+          segmentStartTime = moment(segmentEndTime);
+          segmentEndTime = moment(segmentStartTime);
+          segmentEndTime.add(activityDuration, 'minutes');
+        }
       }
     });
 
-    // last activity gets skipped because of the lunch insertion, but we know the start time so set it
-    timedActivities[timedActivities.length - 1].time = segmentEndTime.format('h:mm a');
-
-    // add in a fake activity so we can see when our day ends
-    let finishTime = moment(start).add(duration, 'hours');
-    timedActivities.push({
-      content: 'Done!',
-      time: finishTime.format('h:mm a'),
-    });
-
-    return timedActivities;
-  }
-
-  activityTimeInMinutes = () => {
-    let {
-      activities,
-      duration,
-      lunchDuration,
-    } = this.props;
-
-    let totalMinutes = duration * 60;
-    let workMinutes = totalMinutes - lunchDuration;
-    return Math.floor(workMinutes/activities.length);
+    return scheduledActivitiesList;
   }
 }
 

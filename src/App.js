@@ -25,25 +25,25 @@ const INITIAL_ACTIVITIES = [
 ];
 
 class App extends Component {
-  state = {
-    activeStep: 0, /* TODO: Change me back to 0 after testing */
-    activities: INITIAL_ACTIVITIES,
-    activityType: null,
-    duration: null,
-    lunchDuration: null,
-    lunchStartTime: '',
-    startTime: '',
-  }
-
   // state = {
-  //   activeStep: 2, /* TODO: Change me back to 0 after testing */
+  //   activeStep: 0, /* TODO: Change me back to 0 after testing */
   //   activities: INITIAL_ACTIVITIES,
-  //   activityType: 'Greenfield',
-  //   duration: 8,
-  //   lunchDuration: 45,
-  //   lunchStartTime: '12:00',
-  //   startTime: '08:00',
+  //   activityType: null,
+  //   duration: null,
+  //   lunchDuration: null,
+  //   lunchStartTime: '',
+  //   startTime: '',
   // }
+
+  state = {
+    activeStep: 3, /* TODO: Change me back to 0 after testing */
+    activities: INITIAL_ACTIVITIES,
+    activityType: 'Greenfield',
+    duration: 8,
+    lunchDuration: 45,
+    lunchStartTime: '12:15',
+    startTime: '08:00',
+  }
 
   render() {
     let {

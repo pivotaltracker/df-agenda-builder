@@ -23,15 +23,11 @@ class TimeScheduler extends React.Component {
     let {
       duration,
       lunchDuration,
-      lunchStartTime,
       onDurationSelect,
       onLunchDurationSelect,
-      onLunchStartTimeSelect,
       onStartTimeSelect,
       startTime,
     } = this.props;
-
-    let hideLunchTime = lunchDuration === 0 ? 'hide lunch time' : 'show lunch time'
 
     return (
       <div>
