@@ -81,7 +81,8 @@ body .LengthButton {
   font-weight: 100;
   font-size: 15px;
   letter-spacing: 0.5px;
-  line-height: 0px;
+  line-height: 10px;
+  padding: 1px 8px;
 }
 
 .AgendaItem--activity {

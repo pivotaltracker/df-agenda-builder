@@ -30,10 +30,6 @@ class AgendaViewer extends React.Component {
   render () {
     let {
       classes,
-      duration,
-      startTime,
-      lunchStartTime,
-      lunchDuration,
       kickOffName,
     } = this.props;
 
@@ -49,9 +45,9 @@ class AgendaViewer extends React.Component {
             <CardContent>
               <div className='AgendaContainer'>
                 <div className='AgendaContainer__grid'>
-                  {[8,9,10,11,12,1,2,3,4].map((hour) => {
+                  {[8,9,10,11,12,1,2,3,4].map((hour, i) => {
                     return (
-                      <div className='Hour__container'>
+                      <div key={i} className='Hour__container'>
                         <span className='Hour__name'>{hour}</span>
                         <span className='Hour__ampm'>{hour <= 7 ? 'PM' : 'AM'}</span>
                         <span className='Hour__line'>&nbsp;</span>
@@ -64,7 +60,7 @@ class AgendaViewer extends React.Component {
                     id="standard-bare"
                     className={classes.textField}
                     style={styles.kickOffName}
-                    value={this.props.kickOffName}
+                    value={kickOffName}
                     margin="normal"
                     placeholder="Kick-off Name"
                     variant="filled"
@@ -74,8 +70,8 @@ class AgendaViewer extends React.Component {
 
                   {this.scheduledActivities().map((activity, index) => {
                     const heightStyle = {
-                      paddingTop: `${Math.floor(activity.duration / 2)}px`,
-                      paddingBottom: `${Math.ceil(activity.duration / 2)}px`,
+                      paddingTop: `${Math.floor((activity.duration - 10) / 2)}px`,
+                      paddingBottom: `${Math.ceil((activity.duration - 10) / 2)}px`,
                     };
 
                     return(<div style={heightStyle} className={`AgendaItem AgendaItem--${activity.type}`} key={index}>{activity.content}, {activity.startTime} - {activity.endTime}</div>);

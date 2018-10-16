@@ -40,9 +40,9 @@ class App extends Component {
   //   activeStep: 3, /* TODO: Change me back to 0 after testing */
   //   activities: INITIAL_ACTIVITIES,
   //   activityType: 'Greenfield',
-  //   duration: 8,
+  //   duration: 6,
   //   lunchDuration: 45,
-  //   lunchStartTime: '12:15',
+  //   lunchStartTime: '12:00',
   //   startTime: '08:00',
   //   kickOffName: '',
   // }
