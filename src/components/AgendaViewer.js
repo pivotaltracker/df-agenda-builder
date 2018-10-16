@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 import '../App.css';
 
@@ -14,14 +15,18 @@ const styles = {
 
   },
   card: {
-    width: 500,
+    width: 575,
     backgroundColor: '#F4F5F7',
   },
+  kickOffName: {
+    backgroundColor: '#FFF',
+    textAlign: 'center',
+    border: 'none',
+    marginBottom: 35,
+  }
 };
 
 class AgendaViewer extends React.Component {
-
-
   render () {
     let {
       classes,
@@ -29,6 +34,7 @@ class AgendaViewer extends React.Component {
       startTime,
       lunchStartTime,
       lunchDuration,
+      kickOffName,
     } = this.props;
 
     return (
@@ -37,26 +43,55 @@ class AgendaViewer extends React.Component {
 
 
         <div className='contentContainer'>
+          <div className='StepSubheader' style={{marginRight: '316px'}}>How does your Kick-off agenda look?<br />Name your Kick-off and click the pencil icon to swap activities.</div>
+
           <Card className={classes.card}>
             <CardContent>
-              <div style={{border: '1px solid #000', padding: '8px'}}>
-                <strong>Recap:</strong>
-                <div>duration: {duration} hours</div>
-                <div>startTime: {startTime}</div>
-                <div>lunchStartTime: {lunchStartTime}</div>
-                <div>lunchDuration: {lunchDuration} minutes</div>
-              </div>
+              <div className='AgendaContainer'>
+                <div className='AgendaContainer__grid'>
+                  {[8,9,10,11,12,1,2,3,4].map((hour) => {
+                    return (
+                      <div className='Hour__container'>
+                        <span className='Hour__name'>{hour}</span>
+                        <span className='Hour__ampm'>{hour <= 7 ? 'PM' : 'AM'}</span>
+                        <span className='Hour__line'>&nbsp;</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className='AgendaContainer__content'>
+                  <TextField
+                    id="standard-bare"
+                    className={classes.textField}
+                    style={styles.kickOffName}
+                    value={this.props.kickOffName}
+                    margin="normal"
+                    placeholder="Kick-off Name"
+                    variant="filled"
+                    fullWidth
+                    onChange={this.updateKickOffName_}
+                  />
 
-              <br />
-              {this.scheduledActivities().map((activity, index) => {
-                return(<div className={`AgendaItem AgendaItem--${activity.type}`} key={index}>{activity.content}, {activity.startTime} - {activity.endTime}</div>);
-              })}
+                  {this.scheduledActivities().map((activity, index) => {
+                    const heightStyle = {
+                      paddingTop: `${Math.floor(activity.duration / 2)}px`,
+                      paddingBottom: `${Math.ceil(activity.duration / 2)}px`,
+                    };
+
+                    return(<div style={heightStyle} className={`AgendaItem AgendaItem--${activity.type}`} key={index}>{activity.content}, {activity.startTime} - {activity.endTime}</div>);
+                  })}
+                </div>
+              </div>
+              <div>&nbsp;</div>
             </CardContent>
           </Card>
         </div>
-
       </div>
     );
+  }
+
+  updateKickOffName_ = (e) => {
+    this.props.onChangeKickOffName(e.target.value)
   }
 
   scheduledActivities = () => {
@@ -87,14 +122,13 @@ class AgendaViewer extends React.Component {
     activities.forEach((activity, index) => {
 
       if (!outOfTime) {
-        if (!lunchScheduled && lunchNeeded && (segmentEndTime.isAfter(lunchStart) || segmentStartTime.isSame(lunchStart))) {
+        if (!lunchScheduled && lunchNeeded && (segmentEndTime.isAfter(lunchStart) || segmentEndTime.isSame(lunchStart))) {
+          console.log('lunch start', lunchStart.format(TIME_FORMAT))
+          console.log('seg start', segmentStartTime.format(TIME_FORMAT))
+          console.log('seg end', segmentEndTime.format(TIME_FORMAT))
+
           if (!segmentStartTime.isSame(lunchStart)) {
-            scheduledActivitiesList.push({
-              content: BREAK_TITLE,
-              startTime: segmentStartTime.format(TIME_FORMAT),
-              endTime: segmentEndTime.format(TIME_FORMAT),
-              type: 'non-activity',
-            });
+            scheduledActivitiesList.push(this.createActivity_(BREAK_TITLE, segmentStartTime, lunchStart, 'non-activity'));
           }
 
           segmentStartTime = moment(lunchStart);
@@ -102,52 +136,25 @@ class AgendaViewer extends React.Component {
           segmentEndTime = moment(segmentStartTime);
           segmentEndTime.add(activityDuration, 'minutes');
 
-          scheduledActivitiesList.push({
-            content: 'Lunch',
-            startTime: lunchStart.format(TIME_FORMAT),
-            endTime: segmentStartTime.format(TIME_FORMAT),
-            type: 'non-activity',
-          });
+          scheduledActivitiesList.push(this.createActivity_('Lunch', lunchStart, segmentStartTime, 'non-activity'));
           lunchScheduled = true;
 
-
-
           if (segmentEndTime.isBefore(finish)) {
-            scheduledActivitiesList.push({
-              content: activity.content,
-              startTime: segmentStartTime.format(TIME_FORMAT),
-              endTime: segmentEndTime.format(TIME_FORMAT),
-              type: 'activity',
-            });
+            scheduledActivitiesList.push(this.createActivity_(activity.content, segmentStartTime, segmentEndTime, 'activity'));
 
             segmentStartTime = moment(segmentEndTime);
             segmentEndTime = moment(segmentStartTime);
             segmentEndTime.add(activityDuration, 'minutes');
           } else {
-            scheduledActivitiesList.push({
-              content: BREAK_TITLE,
-              startTime: segmentStartTime.format(TIME_FORMAT),
-              endTime: segmentEndTime.format(TIME_FORMAT),
-              type: 'non-activity',
-            });
+            scheduledActivitiesList.push(this.createActivity_(BREAK_TITLE, segmentStartTime, segmentEndTime, 'non-activity'));
           }
         } else if (segmentEndTime.isAfter(finish)) {
           outOfTime = true;
           if (segmentStartTime.isBefore(finish)) {
-            scheduledActivitiesList.push({
-              content: BREAK_TITLE,
-              startTime: segmentStartTime.format(TIME_FORMAT),
-              endTime: segmentEndTime.format(TIME_FORMAT),
-              type: 'non-activity',
-            });
+            scheduledActivitiesList.push(this.createActivity_(BREAK_TITLE, segmentStartTime, segmentEndTime, 'non-activity'));
           }
         } else {
-          scheduledActivitiesList.push({
-            content: activity.content,
-            startTime: segmentStartTime.format(TIME_FORMAT),
-            endTime: segmentEndTime.format(TIME_FORMAT),
-            type: 'activity',
-          });
+          scheduledActivitiesList.push(this.createActivity_(activity.content, segmentStartTime, segmentEndTime, 'activity'));
 
           segmentStartTime = moment(segmentEndTime);
           segmentEndTime = moment(segmentStartTime);
@@ -158,10 +165,22 @@ class AgendaViewer extends React.Component {
 
     return scheduledActivitiesList;
   }
+
+  createActivity_ = (content, startTime, endTime, type) => {
+    return {
+      content: content,
+      startTime: startTime.format(TIME_FORMAT),
+      endTime: endTime.format(TIME_FORMAT),
+      duration: endTime.diff(startTime) / 1000 / 60,
+      type: type,
+    }
+  }
 }
 
 AgendaViewer.propTypes = {
   classes: PropTypes.object.isRequired,
+  kickOffName: PropTypes.string.isRequired,
+  onChangeKickOffName: PropTypes.func.isRequired,
   activityType: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
   lunchDuration: PropTypes.number.isRequired,

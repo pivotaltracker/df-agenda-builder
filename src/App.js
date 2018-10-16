@@ -33,6 +33,7 @@ class App extends Component {
     lunchDuration: null,
     lunchStartTime: '',
     startTime: '',
+    kickOffName: '',
   }
 
   // state = {
@@ -43,6 +44,7 @@ class App extends Component {
   //   lunchDuration: 45,
   //   lunchStartTime: '12:15',
   //   startTime: '08:00',
+  //   kickOffName: '',
   // }
 
   render() {
@@ -78,6 +80,7 @@ class App extends Component {
       lunchDuration,
       lunchStartTime,
       startTime,
+      kickOffName,
     } = this.state;
 
     switch (activeStep) {
@@ -112,6 +115,8 @@ class App extends Component {
             lunchStartTime={lunchStartTime}
             startTime={startTime}
             activities={activities}
+            kickOffName={kickOffName}
+            onChangeKickOffName={this.updateKickOffName_}
           />
         );
       case 4:
@@ -123,6 +128,12 @@ class App extends Component {
       default:
         return (<div>What choo talkin bout Willis?</div>);
     }
+  }
+
+  updateKickOffName_ = (value) => {
+    this.setState((prevState, props) => {
+      return {kickOffName: value};
+    });
   }
 
   canMoveToNextStep = () => {

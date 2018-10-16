@@ -74,9 +74,14 @@ body .LengthButton {
 
 .AgendaItem {
   color: #fff;
-  padding: 15px 8px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-radius: 3px;
   margin-bottom: 2px;
+  font-weight: 100;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  line-height: 0px;
 }
 
 .AgendaItem--activity {
@@ -85,4 +90,57 @@ body .LengthButton {
 
 .AgendaItem--non-activity {
   background-color: #A4A7AE;
+}
+
+
+
+.AgendaContainer {
+  position: relative;
+  height: 600px;
+}
+.AgendaContainer__grid {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  z-index: 10;
+}
+.AgendaContainer__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  padding-left: 80px;
+}
+.Hour__container {
+  display: flex;
+  flex-direction: row;
+  height: 62px;
+  color: #555;
+
+}
+.Hour__name {
+  font-size: 39px;
+  font-weight: 100;
+  flex: 0 0 auto;
+  align-self: auto;
+  width: 43px;
+  text-align: right;
+  align-self: flex-end;
+}
+.Hour__ampm {
+  font-size: 10px;
+  flex: 0 0 auto;
+  align-self: flex-end;
+  margin-bottom: 7px;
+  margin-left: 4px;
+}
+.Hour__line {
+  flex: 0 0 auto;
+  align-self: auto;
+  background-color: #555;
+  height: 1px;
+  width: 470px;
+  align-self: flex-end;
+  margin-bottom: 12px;
+  margin-left: 4px;
 }
